@@ -30,10 +30,17 @@ rectangleElement myRectElement = rectangleElement();
 tiled565RGBBitmapElement myHeartsElement = tiled565RGBBitmapElement();
 ```
 Add layer to a layer.
+
 ` MainLayer.addElement(&AnotherLayer); `
 
 Add element to a layer.
-`AnotherLayer.addElement(&notifyTextElement)`
+
+`AnotherLayer.addElement(&notifyTextElement);`
+
+Set visiblity
+
+`notifyTextElement.setVisibility(true);`
+
 
 # Demo sketch output
 
