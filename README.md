@@ -36,7 +36,10 @@ Add element to a layer.
 `AnotherLayer.addElement(&notifyTextElement)`
 
 # Demo sketch output
-![ILI9341 Example](data/ILI9341Layers)
+
+(This is running on esp8266)
+
+![ILI9341 Example](data/ILI9341Layers.gif)
 # Limitations
 × True alpha blending not yet supported.
 
