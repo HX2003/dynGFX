@@ -36,6 +36,11 @@ uint8_t GFXLayer::getSimpleOpacityFirst(){
 		GFXLayer = ElementList.get(0);
 		return (GFXLayer->getSimpleOpacityFirst());
 };
+int8_t GFXLayer::getZIndex(){
+	GFXLayer* GFXLayer;
+		GFXLayer = ElementList.get(0);
+		return (GFXLayer->getZIndex());
+};
 uint16_t GFXLayer::alphaBlendRGB565( uint32_t fg, uint32_t bg, uint8_t alpha){
     alpha = alpha >> 3;
     bg = (bg | (bg << 16)) & 0b00000111111000001111100000011111;
@@ -44,6 +49,9 @@ uint16_t GFXLayer::alphaBlendRGB565( uint32_t fg, uint32_t bg, uint8_t alpha){
     return (uint16_t)((result >> 16) | result);
 }
 //tiled565RGBBitmap Element 
+void tiled565RGBBitmapElement::setZIndex(int8_t zindex){
+	_zindex = zindex;
+}
 void tiled565RGBBitmapElement::setVisibility(bool visibility){
 	_visibility=visibility;
 }
@@ -94,7 +102,13 @@ void tiled565RGBBitmapElement::draw(){
 	}
 	}
 }
+int8_t tiled565RGBBitmapElement::getZIndex(){
+	return _zindex;
+}
 //Rectangle Element
+void rectangleElement::setZIndex(int8_t zindex){
+	_zindex = zindex;
+}
 void rectangleElement::setVisibility(bool visibility){
 	_visibility=visibility;
 }
@@ -131,7 +145,13 @@ void rectangleElement::draw(){
 	_panel->drawRect(_x,_y,_w,_h, alphaBlendRGB565(_rectcolor,_backgroundcolor,_simpleopacity));
 	}
 }
+int8_t rectangleElement::getZIndex(){
+	return _zindex;
+}
 //filledRectangleElement
+void filledRectangleElement::setZIndex(int8_t zindex){
+	_zindex = zindex;
+}
 void filledRectangleElement::setVisibility(bool visibility){
 	_visibility=visibility;
 }
@@ -168,12 +188,18 @@ void filledRectangleElement::draw(){
 	_panel->fillRect(_x,_y,_w,_h, alphaBlendRGB565(_rectcolor,_backgroundcolor,_simpleopacity));
 	}
 }
+int8_t filledRectangleElement::getZIndex(){
+	return _zindex;
+}
 //textElement
 void textElement::print(String text){
 	_text=text;
 }
 String textElement::returnVal(){
 	return _text;
+}
+void textElement::setZIndex(int8_t zindex){
+	_zindex = zindex;
 }
 void textElement::setVisibility(bool visibility){
 	_visibility=visibility;
@@ -216,6 +242,9 @@ void textElement::setCursor(uint16_t cursorx, uint16_t cursory){
 	_cursorx=cursorx;
 	_cursory=cursory;
 }
+int8_t textElement::getZIndex(){
+	return _zindex;
+}
 uint8_t textElement::getSimpleOpacityFirst(){
 	return _simpleopacity;
 }
@@ -234,7 +263,24 @@ void textElement::draw(void){
 }
 void GFXLayerInterface::addElement(GFXLayer *element){
 	ElementList.add(element);
+	this->sort();
 }
+
+int compare_zindex(GFXLayer*& lhs, GFXLayer*& rhs) {
+  if(lhs->getZIndex()<rhs->getZIndex()){
+	  return -1;
+  }
+  if(lhs->getZIndex()==rhs->getZIndex()){
+	  return 0;
+  }
+  if(lhs->getZIndex()<rhs->getZIndex()){
+	  return 1;
+  }
+}
+
+void GFXLayerInterface::sort(){
+	ElementList.sort(compare_zindex);
+} 
 void GFXLayerInterface::draw(){
 	GFXLayer::draw();
 }
@@ -247,6 +293,7 @@ void GFXLayerInterface::setSimpleOpacityAuto(uint8_t opacity){
 void GFXLayerInterface::setVisibility(bool visibility){
 	GFXLayer::setVisibility(visibility);
 }
+
 uint8_t GFXLayerInterface::getSimpleOpacityFirst(){
 	return GFXLayer::getSimpleOpacityFirst();
 }

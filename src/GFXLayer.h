@@ -17,6 +17,7 @@ class GFXLayer{
    setSimpleOpacity(uint8_t opacity),
    setSimpleOpacityAuto(uint8_t opacity);
   virtual uint8_t getSimpleOpacityFirst();
+  virtual int8_t getZIndex();
   protected:  
   uint16_t 
 	alphaBlendRGB565( uint32_t fg, uint32_t bg, uint8_t alpha);
@@ -38,8 +39,10 @@ public:
 	    _tilingymargin=0;
 		_visibility=true;
 		_simpleopacity=255;
+		_zindex=0;
 	};
 void 
+	setZIndex(int8_t zindex),
 	drawRGBBitmap(uint16_t x, uint16_t y, const uint16_t *bitmap, uint16_t w, uint16_t h),
 	draw(),
 	setBackgroundColor(uint16_t backgroundcolor),
@@ -49,7 +52,10 @@ void
 	setTiling(uint16_t tilingx, uint16_t tilingy, uint16_t tilingxmargin, uint16_t tilingymargin),
 	setCursor(uint16_t cursorx, uint16_t cursory);
 uint8_t getSimpleOpacityFirst();
+int8_t getZIndex();
 protected:
+	int8_t 
+	 _zindex;
 	uint8_t  
 	 _simpleopacity;
     const uint16_t *_bitmap;
@@ -81,8 +87,10 @@ public:
 		_h=0;
 		_visibility=true;
 		_simpleopacity=255;
+		_zindex=0;
 	};
 void 
+	setZIndex(int8_t zindex),
 	drawRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t rectcolor),
 	draw(),
 	setBackgroundColor(uint16_t backgroundcolor),
@@ -91,7 +99,10 @@ void
     setSimpleOpacityAuto(uint8_t opacity),
 	setCursor(uint16_t cursorx, uint16_t cursory);
 uint8_t getSimpleOpacityFirst();
+int8_t getZIndex();
 protected:
+	int8_t 
+	 _zindex;
 	uint8_t  
 	 _simpleopacity;
 	uint16_t
@@ -119,8 +130,10 @@ public:
 		_h=0;
 		_visibility=true;
 		_simpleopacity=255;
+		_zindex=0;
 	};
 void 
+	setZIndex(int8_t zindex),
 	fillRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t rectcolor),
 	draw(),
 	setBackgroundColor(uint16_t backgroundcolor),
@@ -129,7 +142,10 @@ void
     setSimpleOpacityAuto(uint8_t opacity),
 	setCursor(uint16_t cursorx, uint16_t cursory);
 uint8_t getSimpleOpacityFirst();
+int8_t getZIndex();
 protected:
+	int8_t 
+	 _zindex;
 	uint8_t  
 	 _simpleopacity;
 	uint16_t
@@ -156,9 +172,11 @@ public:
 		_cursory=0;
 		_visibility=true;
 		_simpleopacity=255;
+		_zindex=0;
 	};
 	//~textElement();
 void
+	setZIndex(int8_t zindex),
 	setVisibility(bool value),
 	setSimpleOpacity(uint8_t opacity),
 	setSimpleOpacityAuto(uint8_t opacity),
@@ -172,10 +190,13 @@ void
 	setTextSize(uint8_t textcolor),
 	print(String text),
 	draw();
+int8_t getZIndex();
 uint8_t getSimpleOpacityFirst();
 String returnVal();
 protected:
 	const GFXfont *_font;
+	int8_t 
+	 _zindex;
 	uint8_t 
 	 _textsize,
 	 _simpleopacity;
@@ -203,5 +224,6 @@ class GFXLayerInterface : public GFXLayer{
 	setVisibility(bool value);
   uint8_t getSimpleOpacityFirst();
   protected:
+  void sort();
 };
 #endif
