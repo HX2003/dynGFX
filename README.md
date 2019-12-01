@@ -30,4 +30,4 @@ tiled565RGBBitmapElement myHeartsElement = tiled565RGBBitmapElement();
 
 × Memory usage is very inefficient right now.
 
-× Does not support dynamic removal of elements and layers
+× Does not support dynamic removal of elements and layers.
