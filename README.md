@@ -22,19 +22,32 @@ Create more layers.
 ```
 GFXLayerInterface AnotherLayer(&tft);
 ```
-Create elements, supported ones are textElement, rectangleElement and tiled565RGBBitmapElement.
+Create elements, supported ones are textElement, rectangleElement, filledRectangleElement and tiled565RGBBitmapElement.
 
 ```
 textElement notifyTextElement = textElement();
 rectangleElement myRectElement = rectangleElement();
+filledRectangleElement myFilledRectElement = filledRectangleElement();
 tiled565RGBBitmapElement myHeartsElement = tiled565RGBBitmapElement();
 ```
 Add layer to a layer.
+
 ` MainLayer.addElement(&AnotherLayer); `
 
 Add element to a layer.
-`AnotherLayer.addElement(&notifyTextElement)`
 
+`AnotherLayer.addElement(&notifyTextElement);`
+
+Set visiblity
+
+`notifyTextElement.setVisibility(true);`
+
+
+# Demo sketch output
+
+(This is running on esp8266)
+
+![ILI9341 Example](data/ILI9341Layers.gif)
 # Limitations
 × True alpha blending not yet supported.
 
