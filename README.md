@@ -29,3 +29,5 @@ tiled565RGBBitmapElement myHeartsElement = tiled565RGBBitmapElement();
 × True alpha blending not yet supported. 0% opacity assumes a black background.
 
 × Memory usage is very inefficient right now.
+
+× Does not support dynamic removal of elements and layers
