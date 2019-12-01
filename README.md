@@ -17,6 +17,11 @@ Add to your main loop.
 
 `MainLayer.draw();`
 
+Create more layers.
+
+```
+GFXLayerInterface AnotherLayer(&tft);
+```
 Create elements, supported ones are textElement, rectangleElement and tiled565RGBBitmapElement.
 
 ```
@@ -24,6 +29,11 @@ textElement notifyTextElement = textElement();
 rectangleElement myRectElement = rectangleElement();
 tiled565RGBBitmapElement myHeartsElement = tiled565RGBBitmapElement();
 ```
+Add layer to a layer.
+` MainLayer.addElement(&AnotherLayer); `
+
+Add element to a layer.
+`AnotherLayer.addElement(&notifyTextElement)`
 
 # Limitations
 × True alpha blending not yet supported. 0% opacity assumes a black background.
