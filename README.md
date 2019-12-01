@@ -22,11 +22,12 @@ Create more layers.
 ```
 GFXLayerInterface AnotherLayer(&tft);
 ```
-Create elements, supported ones are textElement, rectangleElement and tiled565RGBBitmapElement.
+Create elements, supported ones are textElement, rectangleElement, filledRectangleElement and tiled565RGBBitmapElement.
 
 ```
 textElement notifyTextElement = textElement();
 rectangleElement myRectElement = rectangleElement();
+filledRectangleElement myFilledRectElement = filledRectangleElement();
 tiled565RGBBitmapElement myHeartsElement = tiled565RGBBitmapElement();
 ```
 Add layer to a layer.
