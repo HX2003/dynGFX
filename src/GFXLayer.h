@@ -106,6 +106,44 @@ protected:
 	bool
 	 _visibility;
 };
+class filledRectangleElement : public GFXLayer{ 
+public:
+	filledRectangleElement():GFXLayer(){
+		_rectcolor=0xFFFF;
+		_backgroundcolor=0;
+		_cursorx=0;
+		_cursory=0;
+		_x=0;
+		_y=0;
+		_w=0;
+		_h=0;
+		_visibility=true;
+		_simpleopacity=255;
+	};
+void 
+	fillRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t rectcolor),
+	draw(),
+	setBackgroundColor(uint16_t backgroundcolor),
+	setVisibility(bool value),
+    setSimpleOpacity(uint8_t opacity),
+    setSimpleOpacityAuto(uint8_t opacity),
+	setCursor(uint16_t cursorx, uint16_t cursory);
+uint8_t getSimpleOpacityFirst();
+protected:
+	uint8_t  
+	 _simpleopacity;
+	uint16_t
+	 _rectcolor,
+	 _backgroundcolor,
+	 _cursorx,
+	 _cursory,
+	 _x,
+	 _y,
+	 _w,
+	 _h;
+	bool
+	 _visibility;
+};
 class textElement : public GFXLayer{ 
 public:
 	textElement():GFXLayer(){

@@ -131,6 +131,43 @@ void rectangleElement::draw(){
 	_panel->drawRect(_x,_y,_w,_h, alphaBlendRGB565(_rectcolor,_backgroundcolor,_simpleopacity));
 	}
 }
+//filledRectangleElement
+void filledRectangleElement::setVisibility(bool visibility){
+	_visibility=visibility;
+}
+void filledRectangleElement::setSimpleOpacity(uint8_t simpleopacity){
+	_simpleopacity=simpleopacity;
+}
+void filledRectangleElement::setSimpleOpacityAuto(uint8_t simpleopacity){
+	_simpleopacity=simpleopacity;
+	if(_simpleopacity<=8){
+		_visibility=false;
+	}else if(_simpleopacity>8){
+		_visibility=true;
+	}
+}
+void filledRectangleElement::setBackgroundColor(uint16_t backgroundcolor){
+	_backgroundcolor=backgroundcolor;
+}
+void filledRectangleElement::fillRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t rectcolor){
+	_x=x;
+	_y=y;
+	_w=w;
+	_h=h;
+	_rectcolor=rectcolor;
+};
+void filledRectangleElement::setCursor(uint16_t cursorx, uint16_t cursory){
+	_cursorx=cursorx;
+	_cursory=cursory;
+}
+uint8_t filledRectangleElement::getSimpleOpacityFirst(){
+	return _simpleopacity;
+}
+void filledRectangleElement::draw(){
+	if(_visibility){
+	_panel->fillRect(_x,_y,_w,_h, alphaBlendRGB565(_rectcolor,_backgroundcolor,_simpleopacity));
+	}
+}
 //textElement
 void textElement::print(String text){
 	_text=text;

@@ -10,6 +10,7 @@ GFXLayer KEYWORD1
 
 draw KEYWORD2
 addElement KEYWORD2
+setVisibility KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
