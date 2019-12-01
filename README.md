@@ -36,7 +36,7 @@ Add element to a layer.
 `AnotherLayer.addElement(&notifyTextElement)`
 
 # Limitations
-× True alpha blending not yet supported. 0% opacity assumes a black background.
+× True alpha blending not yet supported.
 
 × Memory usage is very inefficient right now.
 
