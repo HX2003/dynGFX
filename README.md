@@ -35,6 +35,8 @@ Add layer to a layer.
 Add element to a layer.
 `AnotherLayer.addElement(&notifyTextElement)`
 
+# Demo sketch output
+![ILI9341 Example](data/ILI9341Layers)
 # Limitations
 × True alpha blending not yet supported.
 
