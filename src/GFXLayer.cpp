@@ -31,15 +31,16 @@ void GFXLayer::setSimpleOpacityAuto(uint8_t simpleopacity){
 		GFXLayer->setSimpleOpacityAuto(simpleopacity);
 	}
 };
+void GFXLayer::setZIndex(int8_t ZIndex){
+	this->ZIndex = ZIndex;
+}
 uint8_t GFXLayer::getSimpleOpacityFirst(){
 	GFXLayer* GFXLayer;
 		GFXLayer = ElementList.get(0);
 		return (GFXLayer->getSimpleOpacityFirst());
 };
 int8_t GFXLayer::getZIndex(){
-	GFXLayer* GFXLayer;
-		GFXLayer = ElementList.get(0);
-		return (GFXLayer->getZIndex());
+	return ZIndex;
 };
 uint16_t GFXLayer::alphaBlendRGB565( uint32_t fg, uint32_t bg, uint8_t alpha){
     alpha = alpha >> 3;
@@ -273,7 +274,7 @@ int compare_zindex(GFXLayer*& lhs, GFXLayer*& rhs) {
   if(lhs->getZIndex()==rhs->getZIndex()){
 	  return 0;
   }
-  if(lhs->getZIndex()<rhs->getZIndex()){
+  if(lhs->getZIndex()>rhs->getZIndex()){
 	  return 1;
   }
 }
@@ -293,7 +294,12 @@ void GFXLayerInterface::setSimpleOpacityAuto(uint8_t opacity){
 void GFXLayerInterface::setVisibility(bool visibility){
 	GFXLayer::setVisibility(visibility);
 }
-
+void GFXLayerInterface::setZIndex(int8_t ZIndex){
+	return GFXLayer::setZIndex(ZIndex);
+}
 uint8_t GFXLayerInterface::getSimpleOpacityFirst(){
 	return GFXLayer::getSimpleOpacityFirst();
+}
+int8_t GFXLayerInterface::getZIndex(){
+	return GFXLayer::getZIndex();
 }

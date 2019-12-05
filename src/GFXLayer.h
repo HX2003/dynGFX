@@ -15,12 +15,15 @@ class GFXLayer{
    draw(),
    setVisibility(bool value),
    setSimpleOpacity(uint8_t opacity),
-   setSimpleOpacityAuto(uint8_t opacity);
+   setSimpleOpacityAuto(uint8_t opacity),
+   setZIndex(int8_t ZIndex);
   virtual uint8_t getSimpleOpacityFirst();
   virtual int8_t getZIndex();
-  protected:  
+  protected: 
+  int8_t 
+	ZIndex = 0;  
   uint16_t 
-	alphaBlendRGB565( uint32_t fg, uint32_t bg, uint8_t alpha);
+	alphaBlendRGB565(uint32_t fg, uint32_t bg, uint8_t alpha);
 };
 class tiled565RGBBitmapElement : public GFXLayer{ 
 public:
@@ -221,8 +224,10 @@ class GFXLayerInterface : public GFXLayer{
 	draw(),
 	setSimpleOpacity(uint8_t opacity),
 	setSimpleOpacityAuto(uint8_t opacity),
-	setVisibility(bool value);
+	setVisibility(bool value),
+	setZIndex(int8_t ZIndex);
   uint8_t getSimpleOpacityFirst();
+  int8_t getZIndex();
   protected:
   void sort();
 };
