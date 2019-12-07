@@ -1,7 +1,14 @@
 #ifndef _GFXLayer_
 #include "GFXLayer.h"
 #endif
+
+#ifdef ADAFRUIT_GFX_LIB
 Adafruit_GFX* _panel;
+#endif
+
+#ifdef TFT_eSPI_LIB
+TFT_eSPI* _panel;
+#endif
 
 //GFXLayer
 void GFXLayer::draw(){
@@ -209,7 +216,13 @@ void GFXText::print(String text){
 	this->text = text;
 }
 void GFXText::drawOverride(){
+	#ifdef ADAFRUIT_GFX_LIB
 	_panel->setFont(font);
+	#endif
+	
+	#ifdef TFT_eSPI_LIB
+	_panel->setFreeFont(font);
+	#endif
 	_panel->setTextWrap(textwrap);
 	_panel->setTextSize(textsize);
 	_panel->setTextColor(alphaBlendRGB565(c, bgc, simpleopacity));
@@ -240,7 +253,7 @@ void GFXTiled565RGBBitmap::drawOverride(){
 		for(int16_t b=0; b<tilingy; b++){ 
 			for(int16_t j=0; j<h; j++) {
 				for(int16_t i=0; i<w; i++ ) {
-					_panel->writePixel(x+i+a*(w+tilingxmargin)+x, y+j+b*(h+tilingymargin)+y, alphaBlendRGB565(pgm_read_word(&bitmap[j * w + i]), bgc , simpleopacity));
+					_panel->drawPixel(x+i+a*(w+tilingxmargin)+x, y+j+b*(h+tilingymargin)+y, alphaBlendRGB565(pgm_read_word(&bitmap[j * w + i]), bgc , simpleopacity));
 				}
 			}
 		}

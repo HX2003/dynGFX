@@ -2,6 +2,7 @@
 # Datatypes (KEYWORD1)
 #######################################
 
+GFXLayer KEYWORD1
 GFXLayerInterface KEYWORD1
 GFXRectangle KEYWORD1
 GFXFilledRectangle KEYWORD1

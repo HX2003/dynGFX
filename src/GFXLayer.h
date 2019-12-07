@@ -1,10 +1,26 @@
 #ifndef _GFXLayer_
 #define _GFXLayer_
 
+#define ADAFRUIT_GFX_LIB
+//#define TFT_eSPI_LIB
+
+#ifdef ADAFRUIT_GFX_LIB
 #include <Adafruit_GFX.h>
+#endif
+
+#ifdef TFT_eSPI_LIB
+#include <TFT_eSPI.h>
+#endif
+
 #include <LinkedList.h>
 
+#ifdef ADAFRUIT_GFX_LIB
 extern Adafruit_GFX* _panel;
+#endif
+
+#ifdef TFT_eSPI_LIB
+extern TFT_eSPI* _panel;
+#endif
 
 class GFXLayer{
 public:
@@ -25,7 +41,13 @@ protected:
 
 class GFXLayerInterface : public GFXLayer{ 
 public:
+	#ifdef ADAFRUIT_GFX_LIB
 	GFXLayerInterface(Adafruit_GFX *panel):GFXLayer(){_panel=panel;};
+	#endif
+
+	#ifdef TFT_eSPI_LIB
+	GFXLayerInterface(TFT_eSPI *panel):GFXLayer(){_panel=panel;};
+	#endif
 	//~GFXLayerInterface();
 	void
 	add(GFXLayer* element),
