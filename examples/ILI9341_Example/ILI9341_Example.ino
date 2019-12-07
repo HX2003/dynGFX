@@ -18,8 +18,8 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
 GFXLayerInterface MainLayer(&tft);
 GFXLayerInterface NotifyLayer(&tft);
-textElement notifyTextElement = textElement();
-rectangleElement notifyBorderElement = rectangleElement();
+GFXText notifyTextElement = GFXText();
+GFXRectangle notifyBorderElement = GFXRectangle();
 void setup() {
   tft.begin();
   tft.setRotation(3);
@@ -46,4 +46,7 @@ void loop() {
   tft.fillScreen(0x000000);
   NotifyLayer.setVisibility(false);
   MainLayer.draw();
+
+  
+  delay(1000);
 }

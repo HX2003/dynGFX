@@ -19,13 +19,12 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 GFXLayerInterface MainLayer(&tft);
 GFXLayerInterface NotifyLayer(&tft);
 GFXLayerInterface bgLayer(&tft);
-GFXText notifyTextElement; 
-GFXFilledRoundRectangle notifyBorderElement; 
+GFXText notifyTextElement;
+GFXFilledRoundRectangle notifyBorderElement;
 
-GFXText bgTextElement; 
-GFXFilledRectangle bgBorderElement; 
+GFXText bgTextElement;
+GFXFilledRectangle bgBorderElement;
 void setup() {
-  Serial.begin(115200);
   tft.begin();
   tft.setRotation(3);
   tft.fillScreen(0x000000);
@@ -33,7 +32,7 @@ void setup() {
   notifyTextElement.setTextSize(1);
   notifyTextElement.print("Hello. You have a message.");
   notifyTextElement.setZIndex(1);
-  
+
   notifyBorderElement.fillRoundRect(95, 95, 200, 20, 5, 0xFAFA);
   notifyBorderElement.setZIndex(0);
   NotifyLayer.add(&notifyTextElement);
@@ -44,7 +43,7 @@ void setup() {
   bgTextElement.setTextSize(2);
   bgTextElement.print("BackgroundText");
   bgTextElement.setZIndex(1);
-  
+
   bgBorderElement.fillRect(60, 60, 300, 100, 0x2222);
   bgBorderElement.setZIndex(0);
   bgLayer.add(&bgTextElement);
@@ -64,4 +63,6 @@ void loop() {
   tft.fillScreen(0x000000);
   NotifyLayer.setVisibility(false);
   MainLayer.draw();
-} 
+
+  delay(1000);
+}
