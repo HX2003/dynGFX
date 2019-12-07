@@ -28,6 +28,8 @@ GFXLayerInterface AnotherLayer(&tft);
 |   GFXFilledRectangle  |
 |   GFXRoundRectangle   |
 |GFXFilledRoundRectangle|
+|      GFXTriangle      |
+|   GFXFilledTriangle   |
 |        GFXText        |
 |  GFXTiled565RGBBitmap |
 
