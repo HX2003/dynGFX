@@ -22,13 +22,24 @@ Create more layers.
 ```
 GFXLayerInterface AnotherLayer(&tft);
 ```
-Create elements, supported ones are textElement, rectangleElement, filledRectangleElement and tiled565RGBBitmapElement.
+|Supported GFX Elements | 
+|-----------------------| 
+|      GFXRectangle     | 
+|   GFXFilledRectangle  |
+|   GFXRoundRectangle   |
+|GFXFilledRoundRectangle|
+|        GFXText        |
+|  GFXTiled565RGBBitmap |
 
+Create elements.
 ```
-textElement notifyTextElement = textElement();
-rectangleElement myRectElement = rectangleElement();
-filledRectangleElement myFilledRectElement = filledRectangleElement();
-tiled565RGBBitmapElement myHeartsElement = tiled565RGBBitmapElement();
+GFXText notifyTextElement = GFXText();
+GFXRectangle myRectElement = GFXRectangle();
+```
+or
+```
+GFXText notifyTextElement;
+GFXRectangle myRectElement;
 ```
 Add layer to a layer.
 
@@ -38,10 +49,13 @@ Add element to a layer.
 
 `AnotherLayer.add(&notifyTextElement);`
 
-Set visiblity
+Set visibility.
 
 `notifyTextElement.setVisibility(true);`
 
+Set ZIndex.
+
+`notifyTextElement.setZIndex(1);`
 
 # Demo sketch output
 
@@ -50,7 +64,5 @@ Set visiblity
 ![ILI9341 Example](data/ILI9341Layers.gif)
 # Limitations
 × True alpha blending not yet supported.
-
-× Memory usage is very inefficient right now.
 
 × Does not support dynamic removal of elements and layers.
