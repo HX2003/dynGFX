@@ -1,9 +1,9 @@
 #ifndef _GFXLayer_
 #define _GFXLayer_
 
-#define ADAFRUIT_GFX_LIB
-//#define TFT_eSPI_LIB
-
+#define ADAFRUIT_GFX_LIB //Comment to disable
+//#define TFT_eSPI_LIB //Uncomment to enable
+ 
 #ifdef ADAFRUIT_GFX_LIB
 #include <Adafruit_GFX.h>
 #endif
