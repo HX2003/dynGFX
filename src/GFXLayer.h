@@ -109,6 +109,32 @@ protected:
 	int16_t h = 0;
 	int16_t r = 0;
 };
+//GFXTriangle
+class GFXTriangle : public GFXBaseElement{ 
+public:
+	GFXTriangle():GFXBaseElement(){};
+	void 
+	drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t c),
+	drawOverride();
+protected:
+	int16_t x1 = 0;
+	int16_t y1 = 0;
+	int16_t x2 = 0;
+    int16_t y2 = 0;
+};
+//GFXFilledTriangle
+class GFXFilledTriangle : public GFXBaseElement{ 
+public:
+	GFXFilledTriangle():GFXBaseElement(){};
+	void 
+    fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t c),
+	drawOverride();
+protected:
+	int16_t x1 = 0;
+	int16_t y1 = 0;
+	int16_t x2 = 0;
+    int16_t y2 = 0;
+}; 
 //GFXText
 class GFXText : public GFXBaseElement{ 
 public:

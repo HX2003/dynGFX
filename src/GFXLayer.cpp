@@ -163,6 +163,32 @@ void GFXFilledRoundRectangle::fillRoundRect(int16_t x, int16_t y, int16_t w, int
 void GFXFilledRoundRectangle::drawOverride(){
 	_panel->fillRoundRect(x, y, w, h, r, alphaBlendRGB565(c, bgc, simpleopacity));
 }
+//GFXTriangle
+void GFXTriangle::drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t c){
+	this->x = x0;
+	this->y = y0;
+	this->x1 = x1;
+	this->y1 = y1;
+	this->x2 = x2;
+	this->y2 = y2;
+	this->c = c;
+}
+void GFXTriangle::drawOverride(){
+	_panel->drawTriangle(x, y, x1, y1, x2, y2, alphaBlendRGB565(c, bgc, simpleopacity));
+}
+//GFXFilledTriangle
+void GFXFilledTriangle::fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t c){
+	this->x = x0;
+	this->y = y0;
+	this->x1 = x1;
+	this->y1 = y1;
+	this->x2 = x2;
+	this->y2 = y2;
+	this->c = c;
+}
+void GFXFilledTriangle::drawOverride(){
+	_panel->fillTriangle(x, y, x1, y1, x2, y2, alphaBlendRGB565(c, bgc, simpleopacity));
+}
 //GFXText
 void GFXText::setFont(const GFXfont *font){
 	this->font = font;

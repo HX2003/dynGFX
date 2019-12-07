@@ -2,8 +2,15 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-GFXLayer KEYWORD1
-
+GFXLayerInterface KEYWORD1
+GFXRectangle KEYWORD1
+GFXFilledRectangle KEYWORD1
+GFXRoundRectangle KEYWORD1
+GFXFilledRoundRectangle KEYWORD1
+GFXTriangle KEYWORD1
+GFXFilledTriangle KEYWORD1
+GFXText KEYWORD1
+GFXTiled565RGBBitmap KEYWORD1	
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
