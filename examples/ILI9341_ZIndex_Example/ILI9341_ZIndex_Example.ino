@@ -18,22 +18,40 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
 GFXLayerInterface MainLayer(&tft);
 GFXLayerInterface NotifyLayer(&tft);
-textElement notifyTextElement = textElement();
-rectangleElement notifyBorderElement = rectangleElement();
+GFXLayerInterface bgLayer(&tft);
+GFXElement notifyTextElement; 
+GFXElement notifyBorderElement; 
+
+GFXElement bgTextElement; 
+GFXElement bgBorderElement; 
 void setup() {
+  Serial.begin(115200);
   tft.begin();
   tft.setRotation(3);
   tft.fillScreen(0x000000);
   notifyTextElement.setCursor(100, 100);
   notifyTextElement.setTextSize(1);
   notifyTextElement.print("Hello. You have a message.");
-
-  notifyBorderElement.drawRect(95, 95, 200, 20, 0xFFFF);
-
+  notifyTextElement.setZIndex(1);
+  
+  notifyBorderElement.fillRect(95, 95, 200, 20, 0xFAFA);
+  notifyBorderElement.setZIndex(0);
   NotifyLayer.add(&notifyTextElement);
   NotifyLayer.add(&notifyBorderElement);
 
+
+  bgTextElement.setCursor(75, 75);
+  bgTextElement.setTextSize(2);
+  bgTextElement.print("BackgroundText");
+  bgTextElement.setZIndex(1);
+  
+  bgBorderElement.fillRect(60, 60, 300, 100, 0x2222);
+  bgBorderElement.setZIndex(0);
+  bgLayer.add(&bgTextElement);
+  bgLayer.add(&bgBorderElement);
+  bgLayer.setZIndex(-1);
   MainLayer.add(&NotifyLayer);
+  MainLayer.add(&bgLayer);
 }
 
 void loop() {
@@ -46,4 +64,4 @@ void loop() {
   tft.fillScreen(0x000000);
   NotifyLayer.setVisibility(false);
   MainLayer.draw();
-}
+}simpleopacity

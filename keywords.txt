@@ -9,7 +9,7 @@ GFXLayer KEYWORD1
 #######################################
 
 draw KEYWORD2
-addElement KEYWORD2
+add KEYWORD2
 setVisibility KEYWORD2
 setZIndex KEYWORD2
 getZIndex KEYWORD2

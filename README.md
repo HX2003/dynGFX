@@ -32,11 +32,11 @@ tiled565RGBBitmapElement myHeartsElement = tiled565RGBBitmapElement();
 ```
 Add layer to a layer.
 
-` MainLayer.addElement(&AnotherLayer); `
+` MainLayer.add(&AnotherLayer); `
 
 Add element to a layer.
 
-`AnotherLayer.addElement(&notifyTextElement);`
+`AnotherLayer.add(&notifyTextElement);`
 
 Set visiblity
 

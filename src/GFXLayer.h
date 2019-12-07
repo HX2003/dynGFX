@@ -7,228 +7,143 @@
 extern Adafruit_GFX* _panel;
 
 class GFXLayer{
-  public:
-    LinkedList<GFXLayer*> ElementList = LinkedList<GFXLayer*>();
-    GFXLayer(){};
-    ~GFXLayer(){};
-  virtual void 
-   draw(),
-   setVisibility(bool value),
-   setSimpleOpacity(uint8_t opacity),
-   setSimpleOpacityAuto(uint8_t opacity),
-   setZIndex(int8_t ZIndex);
-  virtual uint8_t getSimpleOpacityFirst();
-  virtual int8_t getZIndex();
-  protected: 
-  int8_t 
-	ZIndex = 0;  
-  uint16_t 
-	alphaBlendRGB565(uint32_t fg, uint32_t bg, uint8_t alpha);
-};
-class tiled565RGBBitmapElement : public GFXLayer{ 
 public:
-	tiled565RGBBitmapElement():GFXLayer(){
-		_bitmap=NULL;
-		_backgroundcolor=0;
-		_cursorx=0;
-		_cursory=0;
-		_x=0;
-		_y=0;
-		_w=0;
-		_h=0;
-		_tilingx=1;
-	    _tilingy=1;
-	    _tilingxmargin=0;
-	    _tilingymargin=0;
-		_visibility=true;
-		_simpleopacity=255;
-		_zindex=0;
-	};
-void 
-	setZIndex(int8_t zindex),
-	drawRGBBitmap(uint16_t x, uint16_t y, const uint16_t *bitmap, uint16_t w, uint16_t h),
+	LinkedList<GFXLayer*> ElementList = LinkedList<GFXLayer*>();
+	GFXLayer(){};
+	~GFXLayer(){};
+	virtual void 
 	draw(),
-	setBackgroundColor(uint16_t backgroundcolor),
-	setVisibility(bool value),
-    setSimpleOpacity(uint8_t opacity),
-    setSimpleOpacityAuto(uint8_t opacity),
-	setTiling(uint16_t tilingx, uint16_t tilingy, uint16_t tilingxmargin, uint16_t tilingymargin),
-	setCursor(uint16_t cursorx, uint16_t cursory);
-uint8_t getSimpleOpacityFirst();
-int8_t getZIndex();
-protected:
-	int8_t 
-	 _zindex;
-	uint8_t  
-	 _simpleopacity;
-    const uint16_t *_bitmap;
-	uint16_t
-	 _backgroundcolor,
-	 _cursorx,
-	 _cursory,
-	 _x,
-	 _y,
-	 _w,
-	 _h,
-	 _tilingx,
-	 _tilingy,
-	 _tilingxmargin,
-	 _tilingymargin;
-	bool
-	 _visibility;
-};
-class rectangleElement : public GFXLayer{ 
-public:
-	rectangleElement():GFXLayer(){
-		_rectcolor=0xFFFF;
-		_backgroundcolor=0;
-		_cursorx=0;
-		_cursory=0;
-		_x=0;
-		_y=0;
-		_w=0;
-		_h=0;
-		_visibility=true;
-		_simpleopacity=255;
-		_zindex=0;
-	};
-void 
-	setZIndex(int8_t zindex),
-	drawRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t rectcolor),
-	draw(),
-	setBackgroundColor(uint16_t backgroundcolor),
-	setVisibility(bool value),
-    setSimpleOpacity(uint8_t opacity),
-    setSimpleOpacityAuto(uint8_t opacity),
-	setCursor(uint16_t cursorx, uint16_t cursory);
-uint8_t getSimpleOpacityFirst();
-int8_t getZIndex();
-protected:
-	int8_t 
-	 _zindex;
-	uint8_t  
-	 _simpleopacity;
-	uint16_t
-	 _rectcolor,
-	 _backgroundcolor,
-	 _cursorx,
-	 _cursory,
-	 _x,
-	 _y,
-	 _w,
-	 _h;
-	bool
-	 _visibility;
-};
-class filledRectangleElement : public GFXLayer{ 
-public:
-	filledRectangleElement():GFXLayer(){
-		_rectcolor=0xFFFF;
-		_backgroundcolor=0;
-		_cursorx=0;
-		_cursory=0;
-		_x=0;
-		_y=0;
-		_w=0;
-		_h=0;
-		_visibility=true;
-		_simpleopacity=255;
-		_zindex=0;
-	};
-void 
-	setZIndex(int8_t zindex),
-	fillRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t rectcolor),
-	draw(),
-	setBackgroundColor(uint16_t backgroundcolor),
-	setVisibility(bool value),
-    setSimpleOpacity(uint8_t opacity),
-    setSimpleOpacityAuto(uint8_t opacity),
-	setCursor(uint16_t cursorx, uint16_t cursory);
-uint8_t getSimpleOpacityFirst();
-int8_t getZIndex();
-protected:
-	int8_t 
-	 _zindex;
-	uint8_t  
-	 _simpleopacity;
-	uint16_t
-	 _rectcolor,
-	 _backgroundcolor,
-	 _cursorx,
-	 _cursory,
-	 _x,
-	 _y,
-	 _w,
-	 _h;
-	bool
-	 _visibility;
-};
-class textElement : public GFXLayer{ 
-public:
-	textElement():GFXLayer(){
-		_font=NULL;
-		_textwrap=false;
-		_textsize=1;
-		_textcolor=0xFFFF;
-		_backgroundcolor=0;
-		_cursorx=0;
-		_cursory=0;
-		_visibility=true;
-		_simpleopacity=255;
-		_zindex=0;
-	};
-	//~textElement();
-void
-	setZIndex(int8_t zindex),
 	setVisibility(bool value),
 	setSimpleOpacity(uint8_t opacity),
-	setSimpleOpacityAuto(uint8_t opacity),
-	setFont(const GFXfont *font),
-	setTextWrap(bool textwrap),
-	setCursor(uint16_t cursorx, uint16_t cursory),
-	setTextColor(uint16_t textcolor),
-	setTextColor888(uint8_t r, uint8_t g, uint8_t b),
-	setBackgroundColor(uint16_t backgroundcolor),
-	setBackgroundColor888(uint8_t r, uint8_t g, uint8_t b),
-	setTextSize(uint8_t textcolor),
-	print(String text),
-	draw();
-int8_t getZIndex();
-uint8_t getSimpleOpacityFirst();
-String returnVal();
-protected:
-	const GFXfont *_font;
-	int8_t 
-	 _zindex;
-	uint8_t 
-	 _textsize,
-	 _simpleopacity;
-	uint16_t
-	 _textcolor,
-	 _backgroundcolor,
-	 _cursorx,
-	 _cursory;
-    bool
-	 _textwrap,
-     _visibility;
-	String
-     _text;
-	
+	setZIndex(int8_t ZIndex);
+	virtual uint8_t getSimpleOpacityFirst();
+	virtual int8_t getZIndex();
+protected: 
+	int8_t ZIndex = 0;  
+	uint16_t alphaBlendRGB565(uint32_t fg, uint32_t bg, uint8_t alpha);
 };
+
 class GFXLayerInterface : public GFXLayer{ 
-  public:
-  GFXLayerInterface(Adafruit_GFX *panel):GFXLayer(){_panel=panel;};
-  //~GFXLayerInterface();
-  void
-	addElement(GFXLayer* element),
+public:
+	GFXLayerInterface(Adafruit_GFX *panel):GFXLayer(){_panel=panel;};
+	//~GFXLayerInterface();
+	void
+	add(GFXLayer* element),
 	draw(),
 	setSimpleOpacity(uint8_t opacity),
-	setSimpleOpacityAuto(uint8_t opacity),
 	setVisibility(bool value),
 	setZIndex(int8_t ZIndex);
-  uint8_t getSimpleOpacityFirst();
-  int8_t getZIndex();
-  protected:
-  void sort();
+	uint8_t getSimpleOpacityFirst();
+	int8_t getZIndex();
+protected:
+	void sort();
+};
+class GFXBaseElement : public GFXLayer{ 
+public:
+	GFXBaseElement():GFXLayer(){};
+	virtual void drawOverride();
+	void 
+	draw(),
+	setBackgroundColor(uint16_t backgroundcolor),
+	setBackgroundColor888(uint8_t r, uint8_t g, uint8_t b),
+	setCursor(int16_t x, int16_t y),
+	setVisibility(bool visibility),
+	setZIndex(int8_t zindex);
+	int8_t getZIndex();
+	uint8_t getSimpleOpacityFirst();
+protected:
+	uint8_t zindex = 0;
+	int16_t x = 0;
+	int16_t y = 0;
+	uint16_t c = 0xFFFFF;
+	uint16_t bgc = 0x0000;
+	uint8_t simpleopacity = 255;
+};
+	//template <typename T>
+	//void print(T text){
+	//	ZIndex = GFX_TYPE_TEXT;
+	//};
+//GFXRectangle
+class GFXRectangle : public GFXBaseElement{ 
+public:
+	GFXRectangle():GFXBaseElement(){};
+	void 
+	drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t c),
+	drawOverride();
+protected:
+	int16_t w = 0;
+	int16_t h = 0;
+};
+//GFXFilledRectangle
+class GFXFilledRectangle : public GFXBaseElement{ 
+public:
+	GFXFilledRectangle():GFXBaseElement(){};
+	void 
+	fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t c),
+	drawOverride();
+protected:
+	int16_t w = 0;
+	int16_t h = 0;
+};
+//GFXRoundRectangle
+class GFXRoundRectangle : public GFXBaseElement{ 
+public:
+	GFXRoundRectangle():GFXBaseElement(){};
+	void 
+	drawRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t c),
+	drawOverride();
+protected:
+	int16_t w = 0;
+	int16_t h = 0;
+	int16_t r = 0;
+};
+//GFXFilledRoundRectangle
+class GFXFilledRoundRectangle : public GFXBaseElement{ 
+public:
+	GFXFilledRoundRectangle():GFXBaseElement(){};
+	void 
+	fillRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t c),
+	drawOverride();
+protected:
+	int16_t w = 0;
+	int16_t h = 0;
+	int16_t r = 0;
+};
+//GFXText
+class GFXText : public GFXBaseElement{ 
+public:
+	GFXText():GFXBaseElement(){};
+	//~GFXText();
+	void
+	setFont(const GFXfont *font),
+	setTextWrap(bool textwrap),
+	setTextColor(uint16_t textcolor),
+	setTextColor888(uint8_t r, uint8_t g, uint8_t b),
+	setTextSize(uint8_t textcolor),
+	print(String text),
+	drawOverride();
+	String returnTextVal();
+protected:
+	const GFXfont *font = NULL;
+	uint8_t textsize = 1;
+	bool textwrap = false;
+	String text;
+};
+//GFXTiled565RGBBitmap
+class GFXTiled565RGBBitmap : public GFXBaseElement{ 
+public:
+	GFXTiled565RGBBitmap():GFXBaseElement(){};
+	void 
+	drawRGBBitmap(int16_t x, int16_t y, const uint16_t *bitmap, int16_t w, int16_t h),
+	setTiling(uint16_t tilingx, uint16_t tilingy, uint16_t tilingxmargin, uint16_t tilingymargin),
+	drawOverride();
+protected:
+	const uint16_t *bitmap = NULL;
+	int16_t w = 0;
+	int16_t h = 0;
+	uint16_t tilingx = 1;
+	uint16_t tilingy = 1;
+	uint16_t tilingxmargin = 0;
+	uint16_t tilingymargin = 0;
 };
 #endif
