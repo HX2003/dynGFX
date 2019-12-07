@@ -5,6 +5,8 @@ This library is very much in its raw and alpha stage. Best used with a library t
 
 You'll need to install the [LinkedList library](https://github.com/ivanseidel/LinkedList).
 
+Configure for either Adafruit GFX or TFT_eSPI Library in GFXLayer.h
+
 In your sketch include this library.
 
 `#include <GFXLayer.h>`
