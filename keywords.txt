@@ -11,6 +11,7 @@ GFXFilledRoundRectangle KEYWORD1
 GFXTriangle KEYWORD1
 GFXFilledTriangle KEYWORD1
 GFXText KEYWORD1
+GFXGrayscaleBitmap KEYWORD1
 GFXTiled565RGBBitmap KEYWORD1	
 GFXDotsIndicator KEYWORD1
 #######################################

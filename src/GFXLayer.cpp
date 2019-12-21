@@ -212,8 +212,8 @@ void GFXText::setTextColor888(uint8_t r, uint8_t g, uint8_t b){
 void GFXText::setTextSize(uint8_t textsize){
 	this->textsize = textsize;
 }
-void GFXText::setTextCentered(bool centered){
-	this->centered = centered;
+void GFXText::setTextAlignment(uint8_t alignment){
+	this->alignment = alignment;
 }
 void GFXText::print(String text){
 	this->text = text;
@@ -229,19 +229,42 @@ void GFXText::drawOverride(){
 	_panel->setTextWrap(textwrap);
 	_panel->setTextSize(textsize);
 	_panel->setTextColor(alphaBlendRGB565(c, bgc, simpleopacity));
-	if(centered){
-		int16_t x1, y1;
-		uint16_t w1, h1;
+	//Take note alignment does not handle cases where text exceeds boundary
+	int16_t x1, y1;
+	uint16_t w1, h1;
+	switch(alignment){
+	case 0:
+		_panel->setCursor(x, y);
+		break;
+	case TEXT_ALIGNMENT_CENTER:
 		_panel->getTextBounds(text, 0, 0, &x1, &y1, &w1, &h1);
 		_panel->setCursor((_panel->width() - w1) / 2, y);
-	}else{
-		_panel->setCursor(x, y);
+		break;
+	case TEXT_ALIGNMENT_2_LEFT:
+		_panel->getTextBounds(text, 0, 0, &x1, &y1, &w1, &h1);
+		_panel->setCursor((_panel->width()/2 - w1) / 2, y);
+		break;
+	case TEXT_ALIGNMENT_2_RIGHT:
+		_panel->getTextBounds(text, 0, 0, &x1, &y1, &w1, &h1);
+		_panel->setCursor(_panel->width()/2 + (_panel->width()/2 - w1) / 2, y);
+		break;
 	}
 	_panel->print(text);
 	//_panel->display(); use only for matrix
 }
 String GFXText::returnTextVal(){
 	return text;
+}
+//GFXGrayscaleBitmap
+void GFXGrayscaleBitmap::drawGrayscaleBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h){
+	this->x = x;
+	this->y = y;
+	this->w = w;
+	this->h = h;
+	this->bitmap = bitmap;
+}
+void GFXGrayscaleBitmap::drawOverride(){
+	_panel->drawGrayscaleBitmap(x, y, bitmap, w, h);
 }
 #ifdef GFX_EXTENDED_FEATURES
 //GFXTiled565RGBBitmap  

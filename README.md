@@ -33,6 +33,7 @@ GFXLayerInterface AnotherLayer(&tft);
 |      GFXTriangle      |
 |   GFXFilledTriangle   |
 |        GFXText        |
+|   GFXGrayscaleBitmap* |
 
 | Extended GFX Elements | 
 |-----------------------| 

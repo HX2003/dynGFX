@@ -23,6 +23,10 @@ extern Adafruit_GFX* _panel;
 extern TFT_eSPI* _panel;
 #endif
 
+#define TEXT_ALIGNMENT_CENTER 1
+#define TEXT_ALIGNMENT_2_LEFT 2
+#define TEXT_ALIGNMENT_2_RIGHT 3
+
 class GFXLayer{
 public:
 	LinkedList<GFXLayer*> ElementList = LinkedList<GFXLayer*>();
@@ -169,16 +173,29 @@ public:
 	setTextColor(uint16_t c),
 	setTextColor888(uint8_t r, uint8_t g, uint8_t b),
 	setTextSize(uint8_t textcolor),
-	setTextCentered(bool centered),
+	setTextAlignment(uint8_t alignment),
 	print(String text),
 	drawOverride();
 	String returnTextVal();
 protected:
 	const GFXfont *font = NULL;
 	uint8_t textsize = 1;
+	uint8_t alignment = 0;
 	bool textwrap = false;
 	bool centered = false;
 	String text;
+};
+//GFXGrayscaleBitmap
+class GFXGrayscaleBitmap : public GFXBaseElement{ 
+public:
+	GFXGrayscaleBitmap():GFXBaseElement(){};
+	void 
+	drawGrayscaleBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h),
+	drawOverride();
+protected:
+	const uint8_t *bitmap = NULL;
+	int16_t w = 0;
+	int16_t h = 0;
 };
 #ifdef GFX_EXTENDED_FEATURES
 //GFXTiled565RGBBitmap
