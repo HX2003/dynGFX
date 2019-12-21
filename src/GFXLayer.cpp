@@ -203,7 +203,7 @@ void GFXText::setFont(const GFXfont *font){
 void GFXText::setTextWrap(bool textwrap){
 	this->textwrap = textwrap;
 }
-void GFXText::setTextColor(uint16_t textcolor){
+void GFXText::setTextColor(uint16_t c){
 	this->c = c;
 }
 void GFXText::setTextColor888(uint8_t r, uint8_t g, uint8_t b){
@@ -211,6 +211,9 @@ void GFXText::setTextColor888(uint8_t r, uint8_t g, uint8_t b){
 }
 void GFXText::setTextSize(uint8_t textsize){
 	this->textsize = textsize;
+}
+void GFXText::setTextCentered(bool centered){
+	this->centered = centered;
 }
 void GFXText::print(String text){
 	this->text = text;
@@ -226,7 +229,14 @@ void GFXText::drawOverride(){
 	_panel->setTextWrap(textwrap);
 	_panel->setTextSize(textsize);
 	_panel->setTextColor(alphaBlendRGB565(c, bgc, simpleopacity));
-	_panel->setCursor(x, y);
+	if(centered){
+		int16_t x1, y1;
+		uint16_t w1, h1;
+		_panel->getTextBounds(text, 0, 0, &x1, &y1, &w1, &h1);
+		_panel->setCursor((_panel->width() - w1) / 2, y);
+	}else{
+		_panel->setCursor(x, y);
+	}
 	_panel->print(text);
 	//_panel->display(); use only for matrix
 }
@@ -290,10 +300,10 @@ void GFXDotsIndicator::drawOverride(){
 	} 
 	for(uint16_t i=0; i<tilingx; i++){
 		if(i == pos){
-			_panel->fillCircle(offsetx + tilingxspacing*i, offsety, h/2, c);
+			_panel->fillCircle(offsetx + tilingxspacing*i, offsety, h/2, alphaBlendRGB565(c, bgc, simpleopacity));
 		}else{
-			_panel->drawCircle(offsetx + tilingxspacing*i, offsety, h/2, c);
-			_panel->drawCircle(offsetx + tilingxspacing*i, offsety, h/2 - 1, c); //Temporary! Thicker circles without additional functions!
+			_panel->drawCircle(offsetx + tilingxspacing*i, offsety, h/2, alphaBlendRGB565(c, bgc, simpleopacity));
+			_panel->drawCircle(offsetx + tilingxspacing*i, offsety, h/2 - 1, alphaBlendRGB565(c, bgc, simpleopacity)); //Temporary! Thicker circles without additional functions!
 		}
 	}
 }

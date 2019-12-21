@@ -78,7 +78,7 @@ protected:
 	uint8_t zindex = 0;
 	int16_t x = 0;
 	int16_t y = 0;
-	uint16_t c = 0xFFFFF;
+	uint16_t c = 0xFFFF;
 	uint16_t bgc = 0x0000;
 	uint8_t simpleopacity = 255;
 };
@@ -166,9 +166,10 @@ public:
 	void
 	setFont(const GFXfont *font),
 	setTextWrap(bool textwrap),
-	setTextColor(uint16_t textcolor),
+	setTextColor(uint16_t c),
 	setTextColor888(uint8_t r, uint8_t g, uint8_t b),
 	setTextSize(uint8_t textcolor),
+	setTextCentered(bool centered),
 	print(String text),
 	drawOverride();
 	String returnTextVal();
@@ -176,6 +177,7 @@ protected:
 	const GFXfont *font = NULL;
 	uint8_t textsize = 1;
 	bool textwrap = false;
+	bool centered = false;
 	String text;
 };
 #ifdef GFX_EXTENDED_FEATURES
