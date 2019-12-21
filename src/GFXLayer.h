@@ -3,7 +3,8 @@
 
 #define ADAFRUIT_GFX_LIB //Comment to disable
 //#define TFT_eSPI_LIB //Uncomment to enable
- 
+#define GFX_EXTENDED_FEATURES //Comment to disable
+
 #ifdef ADAFRUIT_GFX_LIB
 #include <Adafruit_GFX.h>
 #endif
@@ -177,13 +178,14 @@ protected:
 	bool textwrap = false;
 	String text;
 };
+#ifdef GFX_EXTENDED_FEATURES
 //GFXTiled565RGBBitmap
 class GFXTiled565RGBBitmap : public GFXBaseElement{ 
 public:
 	GFXTiled565RGBBitmap():GFXBaseElement(){};
 	void 
 	drawRGBBitmap(int16_t x, int16_t y, const uint16_t *bitmap, int16_t w, int16_t h),
-	setTiling(uint16_t tilingx, uint16_t tilingy, uint16_t tilingxmargin, uint16_t tilingymargin),
+	setTiling(uint16_t tilingx, uint16_t tilingy, uint16_t tilingxspacing, uint16_t tilingyspacing),
 	drawOverride();
 protected:
 	const uint16_t *bitmap = NULL;
@@ -191,7 +193,23 @@ protected:
 	int16_t h = 0;
 	uint16_t tilingx = 1;
 	uint16_t tilingy = 1;
-	uint16_t tilingxmargin = 0;
-	uint16_t tilingymargin = 0;
+	uint16_t tilingxspacing = 0;
+	uint16_t tilingyspacing = 0;
 };
+//GFXDOTSINDICATOR
+class GFXDotsIndicator : public GFXBaseElement{
+public:
+	GFXDotsIndicator():GFXBaseElement(){}
+	void
+	drawDotsIndicator(int16_t x, int16_t y, int16_t h, uint16_t tilingx, uint16_t tilingxspacing, uint16_t c, bool centered),
+	setDotPosition(uint16_t pos),
+	drawOverride();
+protected:
+	int16_t h = 0;
+	uint16_t pos = 0;
+    uint16_t tilingx = 1;
+	uint16_t tilingxspacing = 0;
+	bool centered = false;
+};
+#endif
 #endif

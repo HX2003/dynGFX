@@ -33,7 +33,11 @@ GFXLayerInterface AnotherLayer(&tft);
 |      GFXTriangle      |
 |   GFXFilledTriangle   |
 |        GFXText        |
+
+| Extended GFX Elements | 
+|-----------------------| 
 |  GFXTiled565RGBBitmap |
+|    GFXDotsIndicator   |
 
 Create elements.
 ```

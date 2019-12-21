@@ -12,6 +12,7 @@ GFXTriangle KEYWORD1
 GFXFilledTriangle KEYWORD1
 GFXText KEYWORD1
 GFXTiled565RGBBitmap KEYWORD1	
+GFXDotsIndicator KEYWORD1
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################

@@ -44,7 +44,7 @@ uint8_t GFXLayer::getSimpleOpacityFirst(){
 int8_t GFXLayer::getZIndex(){
 	return ZIndex;
 }
-uint16_t GFXLayer::alphaBlendRGB565( uint32_t fg, uint32_t bg, uint8_t alpha){
+uint16_t GFXLayer::alphaBlendRGB565(uint32_t fg, uint32_t bg, uint8_t alpha){
 	alpha = alpha >> 3;
 	bg = (bg | (bg << 16)) & 0b00000111111000001111100000011111;
 	fg = (fg | (fg << 16)) & 0b00000111111000001111100000011111;
@@ -233,6 +233,7 @@ void GFXText::drawOverride(){
 String GFXText::returnTextVal(){
 	return text;
 }
+#ifdef GFX_EXTENDED_FEATURES
 //GFXTiled565RGBBitmap  
 void GFXTiled565RGBBitmap::drawRGBBitmap(int16_t x, int16_t y, const uint16_t *bitmap, int16_t w, int16_t h){
 	this->x = x;
@@ -242,21 +243,58 @@ void GFXTiled565RGBBitmap::drawRGBBitmap(int16_t x, int16_t y, const uint16_t *b
 	this->bitmap = bitmap;
 };
 
-void GFXTiled565RGBBitmap::setTiling(uint16_t tilingx, uint16_t tilingy, uint16_t tilingxmargin, uint16_t tilingymargin){
+void GFXTiled565RGBBitmap::setTiling(uint16_t tilingx, uint16_t tilingy, uint16_t tilingxspacing, uint16_t tilingyspacing){
 	this->tilingx = tilingx;
 	this->tilingy = tilingy;
-	this->tilingxmargin = tilingxmargin;
-	this->tilingymargin = tilingymargin;
+	this->tilingxspacing = tilingxspacing;
+	this->tilingyspacing = tilingyspacing;
 }
 void GFXTiled565RGBBitmap::drawOverride(){
-	for(int16_t a=0; a<tilingx; a++){
-		for(int16_t b=0; b<tilingy; b++){ 
+	for(uint16_t a=0; a<tilingx; a++){
+		for(uint16_t b=0; b<tilingy; b++){ 
 			for(int16_t j=0; j<h; j++) {
 				for(int16_t i=0; i<w; i++ ) {
-					_panel->drawPixel(x+i+a*(w+tilingxmargin)+x, y+j+b*(h+tilingymargin)+y, alphaBlendRGB565(pgm_read_word(&bitmap[j * w + i]), bgc , simpleopacity));
+					_panel->drawPixel(x+i+a*(w+tilingxspacing)+x, y+j+b*(h+tilingyspacing)+y, alphaBlendRGB565(pgm_read_word(&bitmap[j * w + i]), bgc , simpleopacity));
 				}
 			}
 		}
 	}
 	//_panel->display(); use only for matrix
 }
+//GFXDotsIndicator
+void GFXDotsIndicator::drawDotsIndicator(int16_t x, int16_t y, int16_t h, uint16_t tilingx, uint16_t tilingxspacing, uint16_t c, bool centered){
+	this->x = x;
+	this->y = y;
+	this->h = h;
+	this->tilingx = tilingx;
+	this->tilingxspacing = tilingxspacing;
+	this->c = c;
+	this->centered = centered;
+}
+void GFXDotsIndicator::setDotPosition(uint16_t pos){
+	this->pos = pos;
+}
+void GFXDotsIndicator::drawOverride(){
+	uint16_t offsetx = 0;
+	uint16_t offsety = 0;
+	//Convert top left to center point
+	offsety = y + h/2;
+	offsetx = x + h/2;
+	if(centered){
+		uint16_t totalw;
+
+		totalw = tilingxspacing*(tilingx - 1);
+		totalw = totalw + h;
+		
+		offsetx = offsetx + (_panel->width() - totalw)/2;
+	} 
+	for(uint16_t i=0; i<tilingx; i++){
+		if(i == pos){
+			_panel->fillCircle(offsetx + tilingxspacing*i, offsety, h/2, c);
+		}else{
+			_panel->drawCircle(offsetx + tilingxspacing*i, offsety, h/2, c);
+			_panel->drawCircle(offsetx + tilingxspacing*i, offsety, h/2 - 1, c); //Temporary! Thicker circles without additional functions!
+		}
+	}
+}
+#endif
