@@ -1,5 +1,5 @@
 # Adafruit-GFX-Layers
-This library is very much in its raw and alpha stage. Best used with a library that supports double buffering or it will be very slow.
+This library is very much in its alpha stage. Best used with a library that supports double buffering or it will be very slow. Make sure you have lots of ram to spare.
 
 # Getting started
 
@@ -71,7 +71,10 @@ Set ZIndex.
 (This is running on esp8266)
 
 ![ILI9341 Example](data/ILI9341Layers.gif)
+
+#Experimental
+
+Loading from a json file.
+
 # Limitations
 × True alpha blending not yet supported.
-
-× Does not support dynamic removal of elements and layers.

@@ -1,10 +1,13 @@
 #ifndef _GFXLayer_
 #define _GFXLayer_
 
+//-------------CONFIGURATION-------------------//
 #define ADAFRUIT_GFX_LIB //Comment to disable
 //#define TFT_eSPI_LIB //Uncomment to enable
 #define GFX_EXTENDED_FEATURES //Comment to disable
-
+#define GFX_USE_JSON_LOADER
+#define GFX_USE_SPIFFS
+/////////////////////////////////////////////////
 #ifdef ADAFRUIT_GFX_LIB
 #include <Adafruit_GFX.h>
 #endif
@@ -13,6 +16,14 @@
 #include <TFT_eSPI.h>
 #endif
 
+#ifdef GFX_USE_JSON_LOADER
+#include <ArduinoJson.h>
+#endif
+
+#ifdef GFX_USE_SPIFFS
+#include <SPIFFS.h>
+#endif
+ 
 #include <LinkedList.h>
 
 #ifdef ADAFRUIT_GFX_LIB
@@ -31,12 +42,14 @@ class GFXLayer{
 public:
 	LinkedList<GFXLayer*> ElementList = LinkedList<GFXLayer*>();
 	GFXLayer(){};
-	~GFXLayer(){};
+	virtual ~GFXLayer(){};
 	virtual void 
 	draw(),
+	clear(bool delete_me),
 	setVisibility(bool value),
 	setSimpleOpacity(uint8_t opacity),
 	setZIndex(int8_t ZIndex);
+	virtual bool isElement();
 	virtual uint8_t getSimpleOpacityFirst();
 	virtual int8_t getZIndex();
 protected: 
@@ -57,6 +70,7 @@ public:
 	void
 	add(GFXLayer* element),
 	draw(),
+	clear(),
 	setSimpleOpacity(uint8_t opacity),
 	setVisibility(bool value),
 	setZIndex(int8_t ZIndex);
@@ -68,6 +82,7 @@ protected:
 class GFXBaseElement : public GFXLayer{ 
 public:
 	GFXBaseElement():GFXLayer(){};
+	virtual ~GFXBaseElement(){};
 	virtual void drawOverride();
 	void 
 	draw(),
@@ -76,15 +91,16 @@ public:
 	setCursor(int16_t x, int16_t y),
 	setVisibility(bool visibility),
 	setZIndex(int8_t zindex);
+	bool isElement();
 	int8_t getZIndex();
 	uint8_t getSimpleOpacityFirst();
-protected:
 	uint8_t zindex = 0;
 	int16_t x = 0;
 	int16_t y = 0;
 	uint16_t c = 0xFFFF;
 	uint16_t bgc = 0x0000;
 	uint8_t simpleopacity = 255;
+protected:
 };
 	//template <typename T>
 	//void print(T text){
@@ -97,9 +113,9 @@ public:
 	void 
 	drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t c),
 	drawOverride();
-protected:
 	int16_t w = 0;
 	int16_t h = 0;
+protected:
 };
 //GFXFilledRectangle
 class GFXFilledRectangle : public GFXBaseElement{ 
@@ -108,9 +124,9 @@ public:
 	void 
 	fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t c),
 	drawOverride();
-protected:
 	int16_t w = 0;
 	int16_t h = 0;
+protected:
 };
 //GFXRoundRectangle
 class GFXRoundRectangle : public GFXBaseElement{ 
@@ -119,10 +135,10 @@ public:
 	void 
 	drawRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t c),
 	drawOverride();
-protected:
 	int16_t w = 0;
 	int16_t h = 0;
 	int16_t r = 0;
+protected:
 };
 //GFXFilledRoundRectangle
 class GFXFilledRoundRectangle : public GFXBaseElement{ 
@@ -131,10 +147,10 @@ public:
 	void 
 	fillRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t c),
 	drawOverride();
-protected:
 	int16_t w = 0;
 	int16_t h = 0;
 	int16_t r = 0;
+protected:
 };
 //GFXTriangle
 class GFXTriangle : public GFXBaseElement{ 
@@ -143,11 +159,11 @@ public:
 	void 
 	drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t c),
 	drawOverride();
-protected:
 	int16_t x1 = 0;
 	int16_t y1 = 0;
 	int16_t x2 = 0;
     int16_t y2 = 0;
+protected:
 };
 //GFXFilledTriangle
 class GFXFilledTriangle : public GFXBaseElement{ 
@@ -156,11 +172,11 @@ public:
 	void 
     fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t c),
 	drawOverride();
-protected:
 	int16_t x1 = 0;
 	int16_t y1 = 0;
 	int16_t x2 = 0;
     int16_t y2 = 0;
+protected:
 }; 
 //GFXText
 class GFXText : public GFXBaseElement{ 
@@ -182,7 +198,6 @@ protected:
 	uint8_t textsize = 1;
 	uint8_t alignment = 0;
 	bool textwrap = false;
-	bool centered = false;
 	String text;
 };
 //GFXGrayscaleBitmap
@@ -229,6 +244,35 @@ protected:
     uint16_t tilingx = 1;
 	uint16_t tilingxspacing = 0;
 	bool centered = false;
+};
+#endif
+
+#ifdef GFX_USE_JSON_LOADER
+class GFXJson{
+public:
+	#ifdef ADAFRUIT_GFX_LIB
+	GFXJson(Adafruit_GFX *panel){_panel=panel;};
+	#endif
+	
+	#ifdef TFT_eSPI_LIB
+	GFXJson(TFT_eSPI *panel){_panel=panel;};
+	#endif
+	
+	void 
+	load(const __FlashStringHelper* src, GFXLayerInterface* element), //Load from progmem
+	load(const String& src, GFXLayerInterface* element), //Load from SPIFFS
+	setFontSlot(uint8_t id, const GFXfont *font),
+	setTypeHandler(void(*handler)(const char*, GFXLayerInterface*, GFXLayer**)),
+	setCharHandler(void(*handler)(const char*, const char*, const char*, GFXLayer**));
+
+	const GFXfont* getFontFromId(uint8_t id);
+protected:
+	template<typename T>
+	void parseJson(T src, GFXLayerInterface* layer);
+	void _load(JsonVariant& json, GFXLayerInterface* element);
+	const GFXfont *fonts[10];
+	void (*typeHandler)(const char*, GFXLayerInterface*, GFXLayer**);
+	void (*charHandler)(const char*, const char*, const char*, GFXLayer**);
 };
 #endif
 #endif
