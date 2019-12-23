@@ -46,13 +46,15 @@ public:
 	virtual void 
 	draw(),
 	clear(bool delete_me),
-	setVisibility(bool value),
-	setSimpleOpacity(uint8_t opacity),
+	setVisibility(bool visibility),
+	setVisibilityRecursive(bool visibility),
+	setSimpleOpacityRecursive(uint8_t opacity),
 	setZIndex(int8_t ZIndex);
 	virtual bool isElement();
 	virtual uint8_t getSimpleOpacityFirst();
 	virtual int8_t getZIndex();
 protected: 
+	bool visibility = true;
 	int8_t ZIndex = 0;  
 	uint16_t alphaBlendRGB565(uint32_t fg, uint32_t bg, uint8_t alpha);
 };
@@ -71,8 +73,6 @@ public:
 	add(GFXLayer* element),
 	draw(),
 	clear(),
-	setSimpleOpacity(uint8_t opacity),
-	setVisibility(bool value),
 	setZIndex(int8_t ZIndex);
 	uint8_t getSimpleOpacityFirst();
 	int8_t getZIndex();
@@ -89,7 +89,8 @@ public:
 	setBackgroundColor(uint16_t backgroundcolor),
 	setBackgroundColor888(uint8_t r, uint8_t g, uint8_t b),
 	setCursor(int16_t x, int16_t y),
-	setVisibility(bool visibility),
+	setVisibility(bool value),
+	setVisibilityRecursive(bool value),
 	setZIndex(int8_t zindex);
 	bool isElement();
 	int8_t getZIndex();
@@ -262,17 +263,17 @@ public:
 	load(const __FlashStringHelper* src, GFXLayerInterface* element), //Load from progmem
 	load(const String& src, GFXLayerInterface* element), //Load from SPIFFS
 	setFontSlot(uint8_t id, const GFXfont *font),
-	setTypeHandler(void(*handler)(const char*, GFXLayerInterface*, GFXLayer**)),
-	setCharHandler(void(*handler)(const char*, const char*, const char*, GFXLayer**));
+	setTypeHandler(void(*typeHandler)(const char*, GFXLayerInterface*, GFXLayer**)),
+	setCharHandler(void(*charHandler)(const char*, const char*, const char*, GFXLayer*));
 
 	const GFXfont* getFontFromId(uint8_t id);
 protected:
 	template<typename T>
 	void parseJson(T src, GFXLayerInterface* layer);
 	void _load(JsonVariant& json, GFXLayerInterface* element);
-	const GFXfont *fonts[10];
+	const GFXfont *fonts[10] = {};
 	void (*typeHandler)(const char*, GFXLayerInterface*, GFXLayer**);
-	void (*charHandler)(const char*, const char*, const char*, GFXLayer**);
+	void (*charHandler)(const char*, const char*, const char*, GFXLayer*);
 };
 #endif
 #endif

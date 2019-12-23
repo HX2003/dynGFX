@@ -12,10 +12,12 @@ TFT_eSPI* _panel;
 
 //GFXLayer
 void GFXLayer::draw(){
-	GFXLayer* GFXLayer;
-	for(int i = 0; i < ElementList.size(); i++){
-		GFXLayer = ElementList.get(i);
-		GFXLayer->draw();
+	if(visibility){
+		GFXLayer* GFXLayer;
+		for(int i = 0; i < ElementList.size(); i++){
+			GFXLayer = ElementList.get(i);
+			GFXLayer->draw();
+		}
 	}
 }
 void GFXLayer::clear(bool delete_me){
@@ -37,17 +39,21 @@ bool GFXLayer::isElement(){
 	return false;
 }
 void GFXLayer::setVisibility(bool visibility){
+	this->visibility = visibility; 
+}
+void GFXLayer::setVisibilityRecursive(bool visibility){
+	this->visibility = visibility; 
 	GFXLayer* GFXLayer;
 	for(int i = 0; i < ElementList.size(); i++){
 		GFXLayer = ElementList.get(i);
-		GFXLayer->setVisibility(visibility);
+		GFXLayer->setVisibilityRecursive(visibility);
 	}
 }
-void GFXLayer::setSimpleOpacity(uint8_t opacity){
+void GFXLayer::setSimpleOpacityRecursive(uint8_t opacity){
 	GFXLayer* GFXLayer;
 	for(int i = 0; i < ElementList.size(); i++){
 		GFXLayer = ElementList.get(i);
-		GFXLayer->setSimpleOpacity(opacity);
+		GFXLayer->setSimpleOpacityRecursive(opacity);
 	}
 }
 void GFXLayer::setZIndex(int8_t ZIndex){
@@ -56,7 +62,6 @@ void GFXLayer::setZIndex(int8_t ZIndex){
 uint8_t GFXLayer::getSimpleOpacityFirst(){
 	GFXLayer* GFXLayer;
 	GFXLayer = ElementList.get(0);
-	return GFXLayer->getSimpleOpacityFirst();
 	return GFXLayer->getSimpleOpacityFirst();
 }
 int8_t GFXLayer::getZIndex(){
@@ -96,12 +101,6 @@ void GFXLayerInterface::draw(){
 void GFXLayerInterface::clear(){
 	GFXLayer::clear(false);
 }
-void GFXLayerInterface::setSimpleOpacity(uint8_t opacity){
-	GFXLayer::setSimpleOpacity(opacity);
-}
-void GFXLayerInterface::setVisibility(bool visibility){
-	GFXLayer::setVisibility(visibility);
-}
 void GFXLayerInterface::setZIndex(int8_t ZIndex){
 	return GFXLayer::setZIndex(ZIndex);
 }
@@ -132,13 +131,22 @@ void GFXBaseElement::setCursor(int16_t x, int16_t y){
 	this->x = x;
 	this->y = y;
 }
-void GFXBaseElement::setVisibility(bool visibility){
-	if(visibility){
-		simpleopacity = 255;
+//setVisibility - basically the same
+void GFXBaseElement::setVisibilityRecursive(bool value){
+	if(value){
+		this->simpleopacity = 255;
 	}else{
-		simpleopacity = 0;
+		this->simpleopacity = 0;
 	}
 }
+void GFXBaseElement::setVisibility(bool value){
+	if(value){
+		this->simpleopacity = 255;
+	}else{
+		this->simpleopacity = 0;
+	}
+}
+//
 void GFXBaseElement::setZIndex(int8_t zindex){
 	this->zindex = zindex;
 }
@@ -373,7 +381,7 @@ void GFXJson::load(const String& src, GFXLayerInterface* layer){
 }
 template<typename T>
 void GFXJson::parseJson(T src, GFXLayerInterface* layer){
-	DynamicJsonDocument doc(4096);
+	DynamicJsonDocument doc(8192);
 	JsonVariant json;
 	auto error = deserializeJson(doc, src);
 	if (error) {
@@ -474,7 +482,7 @@ void GFXJson::_load(JsonVariant& json, GFXLayerInterface* element) {
 						}
 					}
 					if(charHandler != NULL){
-					charHandler(type, k, v, &newElement);
+						charHandler(type, k, v, newElement);
 					}
 				}
 				
@@ -611,6 +619,12 @@ void GFXJson::_load(JsonVariant& json, GFXLayerInterface* element) {
 			}else if(variant.is<bool>()){
 				const char* k = key.c_str();
 				bool v = variant;
+				//GFXBaseElement
+				if(strcmp_P(k, PSTR("visibility"))==0){
+					GFXBaseElement* tempElement = (GFXBaseElement*)newElement;
+					tempElement->setVisibility(v);
+				}
+
 				//Extensions
 				//For GFXText
 				if(strcmp_P(type, PSTR("GFXText"))==0){
@@ -629,10 +643,10 @@ void GFXJson::setFontSlot(uint8_t id, const GFXfont *font){
 const GFXfont* GFXJson::getFontFromId(uint8_t id){
 	return this->fonts[id];
 }
-void GFXJson::setTypeHandler(void(*handler)(const char*, GFXLayerInterface*, GFXLayer**)){
-	typeHandler = handler;
+void GFXJson::setTypeHandler(void(*typeHandler)(const char*, GFXLayerInterface*, GFXLayer**)){
+	this->typeHandler = typeHandler;
 }
-void GFXJson::setCharHandler(void(*handler)(const char*, const char*, const char*, GFXLayer**)){
-	charHandler = handler;
+void GFXJson::setCharHandler(void(*charHandler)(const char*, const char*, const char*, GFXLayer*)){
+	this->charHandler = charHandler;
 }
 #endif
