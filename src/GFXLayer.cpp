@@ -13,21 +13,21 @@ TFT_eSPI* _panel;
 //GFXLayer
 void GFXLayer::draw(){
 	if(visibility){
-		GFXLayer* GFXLayer;
+		GFXLayer* _GFXLayer;
 		for(int i = 0; i < ElementList.size(); i++){
-			GFXLayer = ElementList.get(i);
-			GFXLayer->draw();
+			_GFXLayer = ElementList.get(i);
+			_GFXLayer->draw();
 		}
 	}
 }
 void GFXLayer::clear(bool delete_me){
-	GFXLayer* GFXLayer;
+	GFXLayer* _GFXLayer;
 	for(int i = 0; i < ElementList.size(); i++){
-		GFXLayer = ElementList.get(i);
-		if(GFXLayer->isElement()){
-			delete GFXLayer;
+		_GFXLayer = ElementList.get(i);
+		if(_GFXLayer->isElement()){
+			delete _GFXLayer;
 		}else{
-			GFXLayer->clear(true);
+			_GFXLayer->clear(true);
 		}
 	}
 	ElementList.clear();
@@ -43,21 +43,35 @@ void GFXLayer::setVisibility(bool visibility){
 }
 void GFXLayer::setVisibilityRecursive(bool visibility){
 	this->visibility = visibility; 
-	GFXLayer* GFXLayer;
+	GFXLayer* _GFXLayer;
 	for(int i = 0; i < ElementList.size(); i++){
-		GFXLayer = ElementList.get(i);
-		GFXLayer->setVisibilityRecursive(visibility);
+		_GFXLayer = ElementList.get(i);
+		_GFXLayer->setVisibilityRecursive(visibility);
 	}
 }
 void GFXLayer::setSimpleOpacityRecursive(uint8_t opacity){
-	GFXLayer* GFXLayer;
+	GFXLayer* _GFXLayer;
 	for(int i = 0; i < ElementList.size(); i++){
-		GFXLayer = ElementList.get(i);
-		GFXLayer->setSimpleOpacityRecursive(opacity);
+		_GFXLayer = ElementList.get(i);
+		_GFXLayer->setSimpleOpacityRecursive(opacity);
 	}
 }
 void GFXLayer::setZIndex(int8_t ZIndex){
 	this->ZIndex = ZIndex;
+}
+void GFXLayer::setId(uint8_t id){
+	this->id = id;
+}
+GFXLayer* GFXLayer::getElementById(uint8_t id){
+	GFXLayer* _GFXLayer;
+	for(int i = 0; i < ElementList.size(); i++){
+		_GFXLayer = ElementList.get(i);
+	    GFXLayer* GFXLayerReturn = _GFXLayer->getElementById(id);
+		if(GFXLayerReturn!=NULL){
+			return GFXLayerReturn;
+		}
+	}
+	return NULL;
 }
 uint8_t GFXLayer::getSimpleOpacityFirst(){
 	GFXLayer* GFXLayer;
@@ -101,14 +115,8 @@ void GFXLayerInterface::draw(){
 void GFXLayerInterface::clear(){
 	GFXLayer::clear(false);
 }
-void GFXLayerInterface::setZIndex(int8_t ZIndex){
-	return GFXLayer::setZIndex(ZIndex);
-}
 uint8_t GFXLayerInterface::getSimpleOpacityFirst(){
 	return GFXLayer::getSimpleOpacityFirst();
-}
-int8_t GFXLayerInterface::getZIndex(){
-	return GFXLayer::getZIndex();
 }
 //GFXBaseElement
 void GFXBaseElement::drawOverride(){
@@ -146,12 +154,16 @@ void GFXBaseElement::setVisibility(bool value){
 		this->simpleopacity = 0;
 	}
 }
-//
-void GFXBaseElement::setZIndex(int8_t zindex){
-	this->zindex = zindex;
+GFXLayer* GFXBaseElement::getElementById(uint8_t id){
+	if(this->id==id){
+		Serial.println("you got me "+String(id));
+		return (GFXLayer*)this;
+	}else{
+		return NULL;
+	}
 }
 int8_t GFXBaseElement::getZIndex(){
-	return zindex;
+	return ZIndex;
 }
 uint8_t GFXBaseElement::getSimpleOpacityFirst(){
 	return simpleopacity;
@@ -489,11 +501,14 @@ void GFXJson::_load(JsonVariant& json, GFXLayerInterface* element) {
 			}else if(variant.is<int>()){
 				const char* k = key.c_str();
 				int v = variant;
-				//GFXBaseElement
-				if(strcmp_P(k, PSTR("zindex"))==0){
-					GFXBaseElement* tempElement = (GFXBaseElement*)newElement;
-					tempElement->zindex = v;
+				//GFXLayer
+				if(strcmp_P(k, PSTR("ZIndex"))==0){
+					newElement->ZIndex = v;
 				}
+				if(strcmp_P(k, PSTR("id"))==0){
+					newElement->id = v;
+				}
+				//GFXBaseElement
 				if(strcmp_P(k, PSTR("x"))==0||strcmp_P(k, PSTR("x0"))==0){
 					GFXBaseElement* tempElement = (GFXBaseElement*)newElement;
 					tempElement->x = v;

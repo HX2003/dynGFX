@@ -48,14 +48,17 @@ public:
 	clear(bool delete_me),
 	setVisibility(bool visibility),
 	setVisibilityRecursive(bool visibility),
-	setSimpleOpacityRecursive(uint8_t opacity),
-	setZIndex(int8_t ZIndex);
+	setSimpleOpacityRecursive(uint8_t opacity);
+	void setZIndex(int8_t ZIndex);
+	void setId(uint8_t id);
 	virtual bool isElement();
+	virtual GFXLayer* getElementById(uint8_t id);
 	virtual uint8_t getSimpleOpacityFirst();
 	virtual int8_t getZIndex();
+	int8_t ZIndex = 0;  
+	uint8_t id = 0;
 protected: 
 	bool visibility = true;
-	int8_t ZIndex = 0;  
 	uint16_t alphaBlendRGB565(uint32_t fg, uint32_t bg, uint8_t alpha);
 };
 
@@ -72,10 +75,8 @@ public:
 	void
 	add(GFXLayer* element),
 	draw(),
-	clear(),
-	setZIndex(int8_t ZIndex);
+	clear();
 	uint8_t getSimpleOpacityFirst();
-	int8_t getZIndex();
 protected:
 	void sort();
 };
@@ -90,12 +91,11 @@ public:
 	setBackgroundColor888(uint8_t r, uint8_t g, uint8_t b),
 	setCursor(int16_t x, int16_t y),
 	setVisibility(bool value),
-	setVisibilityRecursive(bool value),
-	setZIndex(int8_t zindex);
+	setVisibilityRecursive(bool value);
 	bool isElement();
 	int8_t getZIndex();
+	GFXLayer* getElementById(uint8_t id);
 	uint8_t getSimpleOpacityFirst();
-	uint8_t zindex = 0;
 	int16_t x = 0;
 	int16_t y = 0;
 	uint16_t c = 0xFFFF;
