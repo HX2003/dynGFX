@@ -90,6 +90,7 @@ public:
 	setBackgroundColor(uint16_t backgroundcolor),
 	setBackgroundColor888(uint8_t r, uint8_t g, uint8_t b),
 	setCursor(int16_t x, int16_t y),
+	setSimpleOpacityRecursive(uint8_t value),
 	setVisibility(bool value),
 	setVisibilityRecursive(bool value);
 	bool isElement();

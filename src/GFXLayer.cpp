@@ -139,6 +139,9 @@ void GFXBaseElement::setCursor(int16_t x, int16_t y){
 	this->x = x;
 	this->y = y;
 }
+void GFXBaseElement::setSimpleOpacityRecursive(uint8_t value){
+	this->simpleopacity = value;
+}
 //setVisibility - basically the same
 void GFXBaseElement::setVisibilityRecursive(bool value){
 	if(value){
@@ -331,7 +334,7 @@ void GFXTiled565RGBBitmap::drawOverride(){
 		for(uint16_t b=0; b<tilingy; b++){ 
 			for(int16_t j=0; j<h; j++) {
 				for(int16_t i=0; i<w; i++ ) {
-					_panel->drawPixel(x+i+a*(w+tilingxspacing)+x, y+j+b*(h+tilingyspacing)+y, alphaBlendRGB565(pgm_read_word(&bitmap[j * w + i]), bgc , simpleopacity));
+					_panel->drawPixel(x+i+a*(w+tilingxspacing), y+j+b*(h+tilingyspacing), alphaBlendRGB565(pgm_read_word(&bitmap[j * w + i]), bgc , simpleopacity));
 				}
 			}
 		}
