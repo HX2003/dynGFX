@@ -1,4 +1,4 @@
-# Adafruit-GFX-Layers
+# dynGFX
 This library is very much in its alpha stage. Best used with a library that supports double buffering or it will be very slow. Make sure you have lots of ram to spare.
 
 # Getting started
